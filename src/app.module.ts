@@ -8,6 +8,7 @@ import { UsersModule } from './users/users.module';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    //DB
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: process.env.DB_HOST,
@@ -18,6 +19,8 @@ import { UsersModule } from './users/users.module';
       entities: [__dirname + '/**/entities/*.entity.ts'],
       synchronize: true,
     }),
+
+    //Modules
     UsersModule,
   ],
 })
