@@ -42,6 +42,13 @@ export class UsersService {
     if (!user) throw new NotFoundException(`کاربری با آیدی ${id} پیدا نشد`);
     return user;
   }
+  
+  async findOneByMobile(mobile: string) {
+    const user = await this.userRepository.findOneBy({ mobile });
+    if (!user)
+      throw new NotFoundException(`کاربری با شماره‌ی ${mobile} پیدا نشد`);
+    return user;
+  }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
     await this.findOne(id);

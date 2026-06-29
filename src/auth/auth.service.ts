@@ -1,4 +1,4 @@
-import { Get, Injectable } from '@nestjs/common';
+import { Get, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { UsersService } from 'src/users/users.service';
@@ -13,6 +13,25 @@ export class AuthService {
   async register(mobile: string, password: string, display_name: string) {
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    await this.userService.create({ mobile, password: hashedPassword, display_name });
+    await this.userService.create({
+      mobile,
+      password: hashedPassword,
+      display_name,
+    });
+  }
+
+  async login(mobile: string, pasword: string) {
+    const user = await this.userService.findOneByMobile(mobile);
+    if (!(await bcrypt.compare(pasword, user.password!))) {
+      throw new UnauthorizedException('رمز عبور اشتباه است');
+    }
+
+    const payload = {
+      mobile: user.mobile,
+      sub: user.id,
+      display_name: user.display_name,
+    };
+
+    
   }
 }
