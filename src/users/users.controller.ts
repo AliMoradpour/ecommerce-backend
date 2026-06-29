@@ -3,12 +3,12 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   HttpStatus,
   Res,
   Query,
+  Put,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -52,17 +52,37 @@ export class UsersController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.usersService.findOne(+id);
+  async findOne(@Res() res: express.Response, @Param('id') id: string) {
+    const user = await this.usersService.findOne(+id);
+
+    return res.status(HttpStatus.FOUND).json({
+      statusCode: HttpStatus.FOUND,
+      data: user,
+      message: 'کاربر مورد نظر پیدا شد',
+    });
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(+id, updateUserDto);
+  @Put(':id')
+  async update(
+    @Res() res: express.Response,
+    @Param('id') id: string,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
+    await this.usersService.update(+id, updateUserDto);
+
+    return res.status(HttpStatus.OK).json({
+      statusCode: HttpStatus.OK,
+      message: 'کاربر با موفقیت آپدیت شد ',
+    });
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+  async remove(@Res() res: express.Response, @Param('id') id: string) {
+    await this.usersService.remove(+id);
+
+    return res.status(HttpStatus.OK).json({
+      statusCode: HttpStatus.OK,
+      message: 'کاربر مورد نظر با موفقیت حذف شد',
+    });
   }
 }
