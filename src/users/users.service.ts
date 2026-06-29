@@ -47,7 +47,10 @@ export class UsersService {
     await this.findOne(id);
 
     try {
-      const updatedUser = await this.userRepository.update(id, updateUserDto);
+      const updatedUser = await this.userRepository.update(id, {
+        display_name: updateUserDto.display_name,
+        role: updateUserDto.role,
+      });
       return updatedUser;
     } catch (error) {
       throw new BadRequestException('هنگام آپدیت یوزر خطایی رخ داد');
