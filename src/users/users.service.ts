@@ -19,10 +19,14 @@ export class UsersService {
 
   async create(createUserDto: CreateUserDto) {
     try {
-      const newUser = this.userRepository.create(createUserDto);
-      return await this.userRepository.save(newUser);
+      const alreadyExist = await this.findOneByMobile(createUserDto.mobile, true);
+      if (!alreadyExist) {
+        const newUser = this.userRepository.create(createUserDto);
+        return await this.userRepository.save(newUser);
+      } else
+        throw new BadRequestException('کاربری با این شماره تلفن وجود دارد');
     } catch (error) {
-      throw new BadRequestException('هنگام ایجاد کاربر جدید، خطایی رخ داد');
+      throw error;
     }
   }
 
@@ -43,10 +47,11 @@ export class UsersService {
     return user;
   }
 
-  async findOneByMobile(mobile: string) {
+  async findOneByMobile(mobile: string, checkExist: boolean = false) {
     const user = await this.userRepository.findOneBy({ mobile });
-    if (!user)
-      throw new NotFoundException(`کاربری با شماره‌ی ${mobile} پیدا نشد`);
+    if (!checkExist)
+      if (!user)
+        throw new NotFoundException(`کاربری با شماره‌ی ${mobile} پیدا نشد`);
     return user;
   }
 
