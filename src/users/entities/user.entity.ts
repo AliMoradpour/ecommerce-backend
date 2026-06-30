@@ -16,7 +16,7 @@ export class User {
   mobile?: string;
 
   @Column({ nullable: false })
-  display_name!: string;
+  displayName!: string;
 
   @Column({ nullable: true })
   password?: string;

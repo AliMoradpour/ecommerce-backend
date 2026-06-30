@@ -10,13 +10,13 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async register(mobile: string, password: string, display_name: string) {
+  async register(mobile: string, password: string, displayName: string) {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     await this.userService.create({
       mobile,
       password: hashedPassword,
-      display_name,
+      displayName,
     });
   }
 
@@ -29,9 +29,7 @@ export class AuthService {
     const payload = {
       mobile: user.mobile,
       sub: user.id,
-      display_name: user.display_name,
+      displayName: user.displayName,
     };
-
-    
   }
 }

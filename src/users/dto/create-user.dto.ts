@@ -23,7 +23,7 @@ export class CreateUserDto {
 
   @IsNotEmpty({ message: 'نام نمیتواند خالی باشد' })
   @IsString({ message: 'نام باید رشته باشد' })
-  display_name!: string;
+  displayName!: string;
 
   @IsString({ message: 'رمز عبور باید رشته باشد' })
   @IsOptional()

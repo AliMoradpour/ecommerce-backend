@@ -26,5 +26,5 @@ export class RegisterDto {
 
   @IsNotEmpty({ message: 'نام نمیتواند خالی باشد' })
   @IsString({ message: 'نام باید رشته باشد' })
-  display_name!: string;
+  displayName!: string;
 }
