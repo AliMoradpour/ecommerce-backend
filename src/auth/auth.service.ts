@@ -22,14 +22,14 @@ export class AuthService {
 
   async login(mobile: string, pasword: string) {
     const user = await this.userService.findOneByMobile(mobile);
-    if (!(await bcrypt.compare(pasword, user.password!))) {
+    if (!(await bcrypt.compare(pasword, user?.password!))) {
       throw new UnauthorizedException('رمز عبور اشتباه است');
     }
 
     const payload = {
-      sub: user.id,
-      mobile: user.mobile,
-      displayName: user.displayName,
+      sub: user?.id,
+      mobile: user?.mobile,
+      displayName: user?.displayName,
     };
 
     const token = this.jwtService.sign(payload)
