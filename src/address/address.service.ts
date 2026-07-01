@@ -15,13 +15,11 @@ export class AddressService {
     private readonly userRepository: Repository<User>,
   ) {}
 
-  async create(
-    createAddressDto: CreateAddressDto,
-    userId: number,
-  ): Promise<Address> {
+  async create(createAddressDto: CreateAddressDto): Promise<Address> {
+    const { userId, ...addressData } = createAddressDto;
     const user = await this.userRepository.findOneByOrFail({ id: userId });
     const address = await this.addressRepository.create({
-      ...createAddressDto,
+      ...addressData,
       user,
     });
 

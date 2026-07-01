@@ -8,6 +8,9 @@ import {
 } from 'class-validator';
 
 export class CreateAddressDto {
+  @IsNotEmpty({ message: 'آیدی کابری نمیتواند خالی باشد' })
+  userId!: number;
+
   @IsNotEmpty({ message: 'استان نمیتواند خالی باشد' })
   @IsString({ message: 'مقدار استان باید رشته باشد' })
   province!: string;
