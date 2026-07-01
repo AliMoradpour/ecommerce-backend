@@ -17,8 +17,13 @@ export class AddressService {
 
   async create(createAddressDto: CreateAddressDto): Promise<Address> {
     const { userId, ...addressData } = createAddressDto;
-    const user = await this.userRepository.findOneByOrFail({ id: userId });
-    const address = await this.addressRepository.create({
+
+    const user = await this.userRepository.findOneBy({ id: userId });
+    if (!user) {
+      throw new NotFoundException('کاربر پیدا نشد');
+    }
+
+    const address = this.addressRepository.create({
       ...addressData,
       user,
     });
@@ -27,17 +32,20 @@ export class AddressService {
   }
 
   async findAll(): Promise<Address[]> {
-    const address = await this.addressRepository.find({ relations: ['user'] });
-    return address;
+    return this.addressRepository.find({
+      relations: { user: true },
+    });
   }
 
   async findOne(id: number): Promise<Address> {
     const address = await this.addressRepository.findOne({
       where: { id },
-      relations: ['user'],
+      relations: { user: true },
     });
 
-    if (!address) throw new NotFoundException('آدرس پیدا نشد');
+    if (!address) {
+      throw new NotFoundException('آدرس پیدا نشد');
+    }
 
     return address;
   }
@@ -47,8 +55,21 @@ export class AddressService {
     updateAddressDto: UpdateAddressDto,
   ): Promise<Address> {
     const address = await this.findOne(id);
-    Object.assign(address, updateAddressDto);
-    return await this.addressRepository.save(address);
+
+    if (updateAddressDto.userId) {
+      const user = await this.userRepository.findOneBy({
+        id: updateAddressDto.userId,
+      });
+      if (!user) {
+        throw new NotFoundException('کاربر پیدا نشد');
+      }
+      address.user = user;
+    }
+
+    const { userId, ...addressData } = updateAddressDto;
+    Object.assign(address, addressData);
+
+    return this.addressRepository.save(address);
   }
 
   async remove(id: number): Promise<void> {
