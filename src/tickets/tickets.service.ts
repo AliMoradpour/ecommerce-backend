@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateTicketDto } from './dto/create-ticket.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Ticket } from './entities/ticket.entity';
@@ -39,5 +43,16 @@ export class TicketsService {
     return this.ticketRepository.find({
       relations: { user: true, replyTo: true },
     });
+  }
+
+  async findOne(id: number): Promise<Ticket> {
+    const ticket = await this.ticketRepository.findOne({
+      where: { id },
+      relations: { user: true, replyTo: true },
+    });
+    if (!ticket) {
+      throw new NotFoundException('تیکت یافت نشد');
+    }
+    return ticket;
   }
 }
