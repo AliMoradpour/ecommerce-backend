@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateTicketDto } from './dto/create-ticket.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Ticket } from './entities/ticket.entity';
@@ -18,9 +18,13 @@ export class TicketsService {
     const user = await this.userService.findOne(userId);
     let replyToTicket;
     if (replyTo) {
-      replyToTicket = await this.ticketRepository.findOneByOrFail({
-        id: replyTo,
+      replyToTicket = await this.ticketRepository.findOne({
+        where: { id: replyTo },
+        relations: { replyTo: true },
       });
+
+      if (replyToTicket.replyTo)
+        throw new BadRequestException('شما نمیتوانید به یک تیکت پاسخ دهید');
     }
 
     const ticket = await this.ticketRepository.create({
