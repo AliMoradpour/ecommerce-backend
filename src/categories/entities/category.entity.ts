@@ -15,10 +15,7 @@ export class Category {
   id: number;
 
   @Column({ nullable: false })
-  name: string;
-
-  @Column({ nullable: false })
-  description: string;
+  title: string;
 
   @CreateDateColumn()
   createdAt: Date;
