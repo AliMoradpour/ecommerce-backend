@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Res, HttpStatus } from '@nestjs/common';
+import { Controller, Post, Body, Res, HttpStatus, Get } from '@nestjs/common';
 import { TicketsService } from './tickets.service';
 import { CreateTicketDto } from './dto/create-ticket.dto';
 import express from 'express';
@@ -18,6 +18,16 @@ export class TicketsController {
       statusCode: HttpStatus.OK,
       data: newTicket,
       message: 'تیکت ایجاد شد',
+    });
+  }
+
+  @Get()
+  async findAll(@Res() res: express.Response) {
+    const tickets = await this.ticketsService.findAll();
+    return res.status(HttpStatus.OK).json({
+      statusCode: HttpStatus.OK,
+      data: tickets,
+      message: 'تیکت ها با موفقیت دریافت شدند',
     });
   }
 }

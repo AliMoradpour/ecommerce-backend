@@ -34,4 +34,10 @@ export class TicketsService {
     });
     return this.ticketRepository.save(ticket);
   }
+
+  async findAll(): Promise<Ticket[]> {
+    return this.ticketRepository.find({
+      relations: { user: true, replyTo: true },
+    });
+  }
 }
