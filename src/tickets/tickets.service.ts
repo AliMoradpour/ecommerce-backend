@@ -41,14 +41,14 @@ export class TicketsService {
 
   async findAll(): Promise<Ticket[]> {
     return this.ticketRepository.find({
-      relations: { user: true, replyTo: true },
+      relations: { replies: true, replyTo: true },
     });
   }
 
   async findOne(id: number): Promise<Ticket> {
     const ticket = await this.ticketRepository.findOne({
       where: { id },
-      relations: { user: true, replyTo: true },
+      relations: { replies: true, replyTo: true },
     });
     if (!ticket) {
       throw new NotFoundException('تیکت یافت نشد');
