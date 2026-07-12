@@ -6,23 +6,22 @@ import {
   CreateDateColumn,
   Entity,
   UpdateDateColumn,
-  DeleteDateColumn,
 } from 'typeorm/browser';
 
 @Entity('categories')
 export class Category {
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @Column({ nullable: false })
-  title: string;
+  title!: string;
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt!: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt!: Date;
 
   @ManyToMany(() => Product, (product) => product.categories)
-  products: Product[];
+  products!: Product[];
 }

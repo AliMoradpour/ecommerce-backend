@@ -2,7 +2,6 @@ import { Category } from 'src/categories/entities/category.entity';
 import {
   Column,
   CreateDateColumn,
-  DeleteDateColumn,
   Entity,
   ManyToMany,
   PrimaryGeneratedColumn,
@@ -13,25 +12,25 @@ import { JoinTable } from 'typeorm/browser';
 @Entity('products')
 export class Product {
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @Column({ nullable: false })
-  title: string;
+  title!: string;
 
   @Column({ nullable: false })
-  price: number;
+  price!: number;
 
   @Column({ nullable: false })
-  stock: number;
+  stock!: number;
 
   @Column({ nullable: false })
-  description: string;
+  description!: string;
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt!: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt!: Date;
 
   @ManyToMany(() => Category, (category) => category.products)
   @JoinTable({
@@ -45,5 +44,5 @@ export class Product {
       referencedColumnName: 'id',
     },
   })
-  categories: Category[];
+  categories!: Category[];
 }
