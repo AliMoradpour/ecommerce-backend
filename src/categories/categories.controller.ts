@@ -22,9 +22,10 @@ export class CategoriesController {
 
   @Get()
   async findAll(@Res() res: express.Response) {
-    await this.categoriesService.findAll();
+    const categories = await this.categoriesService.findAll();
     return res.status(HttpStatus.OK).json({
       statusCode: HttpStatus.OK,
+      data: categories,
       message: 'لیست دسته‌بندی ها با موفقیت پیدا شد',
     });
   }
