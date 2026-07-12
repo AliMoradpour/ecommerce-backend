@@ -8,6 +8,7 @@ import {
   Delete,
   Res,
   HttpStatus,
+  Put,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -51,4 +52,6 @@ export class ProductsController {
       message: 'محصول مورد نظر پیدا شد',
     });
   }
+
+
 }

@@ -34,6 +34,11 @@ export class ProductsService {
     return await this.productReposiory.save(product);
   }
 
+  async update(id: number, updateProductDto: UpdateProductDto) {
+    const { title, price, description, stock, categoryIds } = updateProductDto;
+    const product = await this.productReposiory.findOne()
+  }
+
   async findAll(): Promise<Product[]> {
     return await this.productReposiory.find({
       relations: { categories: true },
@@ -50,4 +55,6 @@ export class ProductsService {
 
     return product;
   }
+
+  async remove(id: number) {}
 }
