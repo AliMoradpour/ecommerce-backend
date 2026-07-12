@@ -11,12 +11,12 @@ export class CategoriesService {
     private readonly categoryRepository: Repository<Category>,
   ) {}
 
-  async create(createCategoryDto: CreateCategoryDto) {
+  async create(createCategoryDto: CreateCategoryDto): Promise<Category> {
     const category = this.categoryRepository.create(createCategoryDto);
     return await this.categoryRepository.save(category);
   }
 
-  async findAll() {
+  async findAll(): Promise<Category[]> {
     return await this.categoryRepository.find({
       relations: { products: true },
     });
