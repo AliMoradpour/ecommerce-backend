@@ -34,9 +34,25 @@ export class ProductsService {
     return await this.productReposiory.save(product);
   }
 
-  async update(id: number, updateProductDto: UpdateProductDto) {
+  async update(
+    id: number,
+    updateProductDto: UpdateProductDto,
+  ): Promise<Product> {
     const { title, price, description, stock, categoryIds } = updateProductDto;
-    const product = await this.productReposiory.findOne()
+    const product = await this.findOne(id);
+
+    if (title) product.title = title;
+    if (price) product.price = price;
+    if (description) product.description = description;
+    if (stock) product.stock = stock;
+    if (categoryIds) {
+      const categories = await this.categoryReposiory.findBy({
+        id: In(categoryIds),
+      });
+      product.categories = categories;
+    }
+
+    return await this.productReposiory.save(product);
   }
 
   async findAll(): Promise<Product[]> {

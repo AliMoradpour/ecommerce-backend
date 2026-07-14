@@ -5,10 +5,8 @@ import {
   Body,
   Patch,
   Param,
-  Delete,
   Res,
   HttpStatus,
-  Put,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -53,5 +51,18 @@ export class ProductsController {
     });
   }
 
+  @Patch(':id')
+  async update(
+    @Res() res: express.Response,
+    @Param('id') id: string,
+    @Body() updateProductDto: UpdateProductDto,
+  ) {
+    const product = await this.productsService.update(+id, updateProductDto);
 
+    return res.status(HttpStatus.OK).json({
+      statusCode: HttpStatus.OK,
+      data: product,
+      message: 'محصول به موفقیت آپدیت شد',
+    });
+  }
 }
