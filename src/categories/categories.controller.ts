@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Res, HttpStatus } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Res,
+  HttpStatus,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { CategoriesService } from './categories.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import express from 'express';
@@ -27,6 +36,26 @@ export class CategoriesController {
       statusCode: HttpStatus.OK,
       data: categories,
       message: 'لیست دسته‌بندی ها با موفقیت پیدا شد',
+    });
+  }
+
+  @Get(':id')
+  async findOne(@Res() res: express.Response, @Param('id') id: string) {
+    const category = await this.categoriesService.findOne(+id);
+    return res.status(HttpStatus.OK).json({
+      statusCode: HttpStatus.OK,
+      data: category,
+      message: 'دسته بندی مورد نظر پیدا شد',
+    });
+  }
+
+  @Delete(':id')
+  async remove(@Res() res: express.Response, @Param('id') id: string) {
+    await this.categoriesService.removeOnlyCategory(+id);
+
+    return res.status(HttpStatus.OK).json({
+      statusCode: HttpStatus.OK,
+      message: 'دسته بندی مورد نظر حذف شد',
     });
   }
 }
