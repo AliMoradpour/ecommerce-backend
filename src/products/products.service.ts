@@ -72,5 +72,10 @@ export class ProductsService {
     return product;
   }
 
-  async remove(id: number) {}
+  async remove(id: number) {
+    const result = await this.productReposiory.delete(id);
+    if (result.affected === 0) {
+      throw new NotFoundException(`محصول با آیدی ${id} پیدا نشد`);
+    }
+  }
 }

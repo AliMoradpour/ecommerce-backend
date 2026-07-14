@@ -7,6 +7,7 @@ import {
   Param,
   Res,
   HttpStatus,
+  Delete,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -63,6 +64,15 @@ export class ProductsController {
       statusCode: HttpStatus.OK,
       data: product,
       message: 'محصول به موفقیت آپدیت شد',
+    });
+  }
+
+  @Delete(':id')
+  async remove(@Res() res: express.Response, @Param('id') id: string) {
+    await this.productsService.remove(+id);
+    return res.status(HttpStatus.OK).json({
+      statusCode: HttpStatus.OK,
+      message: `محصول ${id} با موفقیت حذف شد`,
     });
   }
 }
